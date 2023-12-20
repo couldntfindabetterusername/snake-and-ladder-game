@@ -15,40 +15,64 @@ public class App {
         return roll;
     }
 
+    public static int playTurn(int position) {
+        if (position == 100) {
+            return position;
+        }
+
+        int currOption = checkOption();
+        int currDiceRoll = rollDice();
+
+        switch (currOption) {
+            case SNAKE:
+                System.out.println("Your current option is snake");
+                position = (position - currDiceRoll) < 0 ? 0 : position - currDiceRoll;
+                break;
+
+            case LADDER:
+                System.out.println("Your current option is ladder");
+                position = (position + currDiceRoll) > 100 ? position : position + currDiceRoll;
+                position = playTurn(position);
+                break;
+
+            default:
+                System.out.println("Your current option is no play");
+                break;
+        }
+
+        return position;
+    }
+
     public static void main(String[] args) throws Exception {
         System.out.println("Welcome to snake and ladders game");
 
-        int position = 0;
-        System.out.println("Starting position of player: " + position);
+        int player1Pos = 0;
+        int player2Pos = 0;
+        System.out.println("Starting position of player-1: " + player1Pos);
+        System.out.println("Starting position of player-2: " + player2Pos);
 
         int numOfDiceRolls = 0;
 
-        while (position < 100) {
-            int currOption = checkOption();
-            int currDiceRoll = rollDice();
+        while (player1Pos < 100 && player2Pos < 100) {
+            numOfDiceRolls += 1;
+            System.out.println("Turn: " + numOfDiceRolls);
 
-            switch (currOption) {
-                case SNAKE:
-                    System.out.println("Your current option is snake");
-                    position = (position - currDiceRoll) < 0 ? 0 : position - currDiceRoll;
-                    numOfDiceRolls++;
-                    break;
+            player1Pos = playTurn(player1Pos);
+            System.out.println("New position of player-1: " + player1Pos);
 
-                case LADDER:
-                    System.out.println("Your current option is ladder");
-                    position = (position + currDiceRoll) > 100 ? position : position + currDiceRoll;
-                    numOfDiceRolls++;
-                    break;
+            player2Pos = playTurn(player2Pos);
+            System.out.println("New position of player-2: " + player2Pos);
 
-                default:
-                    System.out.println("Your current option is no play");
-                    break;
+            if (player1Pos == 100) {
+                System.out.println("Player 1 has won the game in " + numOfDiceRolls + " --------------");
+                break;
+            } else if (player2Pos == 100) {
+                System.out.println("Player 2 has won the game in " + numOfDiceRolls + " --------------");
+                break;
             }
 
-            System.out.println("After " + numOfDiceRolls + " dicerolls, your new position is " + position);
             System.out.println();
         }
 
-        System.out.println("-------------------- Player won in " + numOfDiceRolls + " rolls -----------------------");
     }
 }
