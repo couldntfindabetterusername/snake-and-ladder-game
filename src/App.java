@@ -21,6 +21,8 @@ public class App {
         int position = 0;
         System.out.println("Starting position of player: " + position);
 
+        int numOfDiceRolls = 0;
+
         while (position < 100) {
             int currOption = checkOption();
             int currDiceRoll = rollDice();
@@ -29,11 +31,13 @@ public class App {
                 case SNAKE:
                     System.out.println("Your current option is snake");
                     position = (position - currDiceRoll) < 0 ? 0 : position - currDiceRoll;
+                    numOfDiceRolls++;
                     break;
 
                 case LADDER:
                     System.out.println("Your current option is ladder");
                     position = (position + currDiceRoll) > 100 ? position : position + currDiceRoll;
+                    numOfDiceRolls++;
                     break;
 
                 default:
@@ -41,9 +45,10 @@ public class App {
                     break;
             }
 
-            System.out.println("Your new position is " + position);
+            System.out.println("After " + numOfDiceRolls + " dicerolls, your new position is " + position);
             System.out.println();
         }
 
+        System.out.println("-------------------- Player won in " + numOfDiceRolls + " rolls -----------------------");
     }
 }
