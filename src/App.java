@@ -1,7 +1,7 @@
 public class App {
-    static int NO_PLAY = 0;
-    static int LADDER = 1;
-    static int SNAKE = 2;
+    static final int NO_PLAY = 0;
+    static final int LADDER = 1;
+    static final int SNAKE = 2;
 
     public static int checkOption() {
         int option = (int) (Math.random() * 3);
@@ -21,23 +21,29 @@ public class App {
         int position = 0;
         System.out.println("Starting position of player: " + position);
 
-        int currOption = checkOption();
+        while (position < 100) {
+            int currOption = checkOption();
+            int currDiceRoll = rollDice();
 
-        if (currOption == NO_PLAY) {
-            System.out.println("Your current option is no play");
-            return;
+            switch (currOption) {
+                case SNAKE:
+                    System.out.println("Your current option is snake");
+                    position = (position - currDiceRoll) < 0 ? 0 : position - currDiceRoll;
+                    break;
+
+                case LADDER:
+                    System.out.println("Your current option is ladder");
+                    position = (position + currDiceRoll) > 100 ? position : position + currDiceRoll;
+                    break;
+
+                default:
+                    System.out.println("Your current option is no play");
+                    break;
+            }
+
+            System.out.println("Your new position is " + position);
+            System.out.println();
         }
 
-        System.out.println("Your current option is " + (currOption == LADDER ? "ladder" : "snake"));
-
-        int currTurn = rollDice();
-        System.out.println("Current turn: " + currTurn);
-
-        if (currOption == LADDER)
-            position += currTurn;
-        else
-            position -= currTurn;
-
-        System.out.println("Your new position is " + position);
     }
 }
